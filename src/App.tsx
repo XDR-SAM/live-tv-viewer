@@ -6,7 +6,7 @@ import { channels } from "./data/channels";
 export type { Channel } from "./data/channels";
 
 export default function App() {
-  const [selected, setSelected] = useState(() => channels[0]);
+  const [selected, setSelected] = useState<Channel>(() => channels[0]);
   const [qualities, setQualities] = useState<{ label: string; level: number }[]>([]);
   const [currentQuality, setCurrentQuality] = useState<number>(-1);
   const [error, setError] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export default function App() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const hlsRef = useRef<Hls | null>(null);
 
-  const handleSelect = (ch: typeof channels[number]) => {
+  const handleSelect = (ch: Channel) => {
     setLoading(true);
     setSelected(ch);
     setError(null);
@@ -47,7 +47,9 @@ export default function App() {
         level: i,
       }));
       setQualities(list);
-      const auto = list.find((l) => l.label === "720p") ? list.find((l) => l.label === "720p")!.level : -1;
+      const auto = list.find((l) => l.label === "720p")
+        ? list.find((l) => l.label === "720p")!.level
+        : -1;
       setCurrentQuality(auto);
       hls.currentLevel = auto;
       setLoading(false);
