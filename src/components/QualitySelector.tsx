@@ -1,4 +1,3 @@
-import React from 'react';
 import './QualitySelector.css';
 
 interface QualitySelectorProps {

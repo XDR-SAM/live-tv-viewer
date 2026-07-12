@@ -1,4 +1,4 @@
-import { Channel, categories } from "../data/channels";
+import type { Channel } from "./data/channels";
 
 type Props = {
   channels: Channel[];
