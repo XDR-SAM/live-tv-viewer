@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Hls from "hls.js";
 import ChannelList from "./ChannelList";
+import type { Channel } from "./data/channels";
 import { channels } from "./data/channels";
-
-export type { Channel } from "./data/channels";
 
 export default function App() {
   const [selected, setSelected] = useState<Channel>(() => channels[0]);
