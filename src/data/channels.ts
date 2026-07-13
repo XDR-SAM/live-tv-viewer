@@ -25,6 +25,30 @@ export const channels: Channel[] = [
     url: "http://service-stitcher.clusters.pluto.tv/stitch/hls/channel/642d4493aa2d690008f0a03f/master.m3u8?appName=web&appVersion=unknown&clientTime=0&deviceDNT=0&deviceMake=Chrome&deviceModel=web&deviceType=web&deviceVersion=unknown",
   },
   {
+    id: "jw-platform",
+    name: "JW Platform Test HD",
+    group: "HD / Tested",
+    url: "http://content.jwplatform.com/manifests/vM7nH0Kl.m3u8",
+  },
+  {
+    id: "longtail-adaptive",
+    name: "Longtail Adaptive",
+    group: "HD / Tested",
+    url: "http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8",
+  },
+  {
+    id: "skate-phantom-4k",
+    name: "Skate Phantom Flex 4K",
+    group: "4K / Tested",
+    url: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
+  },
+  {
+    id: "apple-qthttp",
+    name: "Apple HTTP Test",
+    group: "HD / Tested",
+    url: "http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8",
+  },
+  {
     id: "bein-xumo",
     name: "BeIN Sports Extra Xumo",
     group: "Sports / Tested",
@@ -49,8 +73,8 @@ export const channels: Channel[] = [
     url: "https://africa24.vedge.infomaniak.com/livecast/ik:africa24sport/manifest.m3u8",
   },
   {
-    id: "mux-test",
-    name: "Mux Test Stream",
+    id: "mux-test-720",
+    name: "Mux Test 720p",
     group: "Test / Tested",
     url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
   },
