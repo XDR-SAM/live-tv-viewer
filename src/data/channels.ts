@@ -7,22 +7,82 @@ export interface Channel {
 
 export const channels: Channel[] = [
   {
-    id: "livenow-fox",
-    name: "LiveNOW from FOX",
+    id: "fox-sports-1-iptv185",
+    name: "Fox Sports 1",
     group: "Fox / Tested",
-    url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00488-foxdigital-livenowbyfox-lgus/playlist.m3u8",
+    url: "http://85.237.89.160:9590/usa-s/FOX-SPORTS-1/index.m3u8",
   },
   {
-    id: "fox-news-radio",
-    name: "Fox News Radio",
+    id: "fox-sports-1-streamvidex",
+    name: "Fox Sports 1 (alt)",
     group: "Fox / Tested",
-    url: "https://radiovid.foxnews.com/hls/live/661547/RADIOVID/index.m3u8",
+    url: "https://streamvidex.qzz.io/videx/fox1usa/index.m3u8",
+  },
+  {
+    id: "fox-news-preview",
+    name: "Fox News Preview",
+    group: "Fox / Tested",
+    url: "http://247preview.foxnews.com/hls/live/2020027/fncv3preview/primary.m3u8",
+  },
+  {
+    id: "fox-news-40",
+    name: "Fox News 40.160",
+    group: "Fox / Tested",
+    url: "http://40.160.24.52/FOX_NEWS/index.m3u8",
+  },
+  {
+    id: "fox-news-41",
+    name: "Fox News 41.205",
+    group: "Fox / Tested",
+    url: "http://41.205.77.102/FOX-NEWS/index.m3u8",
+  },
+  {
+    id: "fox-news-45",
+    name: "Fox News 45.190",
+    group: "Fox / Tested",
+    url: "http://45.190.28.50/FOX_NEWS/index.m3u8",
+  },
+  {
+    id: "fox-news-138",
+    name: "Fox News 138.121",
+    group: "Fox / Tested",
+    url: "http://138.121.15.230:9002/FOX-NEWS/index.m3u8",
+  },
+  {
+    id: "fox-news-206",
+    name: "Fox News 206.212",
+    group: "Fox / Tested",
+    url: "http://206.212.244.63/67/index.m3u8",
+  },
+  {
+    id: "livenow-fox-vizio",
+    name: "LiveNOW from FOX Vizio",
+    group: "Fox / Tested",
+    url: "https://fox-foxnewsnow-vizio.amagi.tv/playlist.m3u8",
+  },
+  {
+    id: "livenow-fox-jmp2",
+    name: "LiveNOW from FOX JMP2",
+    group: "Fox / Tested",
+    url: "https://jmp2.uk/plu-63d025db4e83e700086eaa96.m3u8",
+  },
+  {
+    id: "livenow-fox-amagi",
+    name: "LiveNOW from FOX Amagi",
+    group: "Fox / Tested",
+    url: "https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00488-foxdigital-livenowbyfox-lgus/playlist.m3u8",
   },
   {
     id: "fox-sports-es",
     name: "Fox Sports en Espanol",
     group: "Fox / Tested",
     url: "https://live-manifest.production-public.tubi.io/live/d906efca-1302-4e29-b0d9-9a1d7a305d69/playlist.m3u8",
+  },
+  {
+    id: "fox-news-radio",
+    name: "Fox News Radio",
+    group: "Fox / Tested",
+    url: "https://radiovid.foxnews.com/hls/live/661547/RADIOVID/index.m3u8",
   },
   {
     id: "nbc-sports-now",
@@ -43,22 +103,10 @@ export const channels: Channel[] = [
     url: "https://bein-esp-xumo.amagi.tv/playlistR720P.m3u8",
   },
   {
-    id: "bein-xumo-alt",
-    name: "BeIN Sports Xumo alt",
-    group: "Sports / Tested",
-    url: "https://bein-esp-xumo.amagi.tv/playlist.m3u8",
-  },
-  {
     id: "redbull-hd",
     name: "Red Bull HD",
     group: "Sports / Tested",
     url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_3360.m3u8",
-  },
-  {
-    id: "redbull",
-    name: "Red Bull TV",
-    group: "Sports / Tested",
-    url: "https://rbmn-live.akamaized.net/hls/live/590964/BoRB-AT/master_1660.m3u8",
   },
   {
     id: "sportsgrid",
@@ -71,12 +119,6 @@ export const channels: Channel[] = [
     name: "World Poker Tour 1080p",
     group: "Sports / Tested",
     url: "https://d39g1vxj2ef6in.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/15d59f2f-80da-4448-9bce-775cc9f470f7/1.m3u8",
-  },
-  {
-    id: "world-poker-tour",
-    name: "World Poker Tour",
-    group: "Sports / Tested",
-    url: "https://d39g1vxj2ef6in.cloudfront.net/v1/master/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod-rakuten-stitched/playlist.m3u8?ads.xumo_channelId=88883102",
   },
   {
     id: "30a-golf",
@@ -103,22 +145,10 @@ export const channels: Channel[] = [
     url: "https://d2l4ar6y3mrs4k.cloudfront.net/live-streaming/abpnews-livetv/master.m3u8",
   },
   {
-    id: "akd-calcutta",
-    name: "AKD Calcutta News",
-    group: "News / Tested",
-    url: "https://cdn-2.pishow.tv/live/237/master.m3u8",
-  },
-  {
     id: "4tv-news",
     name: "4TV News",
     group: "News / Tested",
     url: "https://cdn-4.pishow.tv/live/1007/master.m3u8",
-  },
-  {
-    id: "24news",
-    name: "24 News 396p",
-    group: "News / Tested",
-    url: "https://yuppmedtaorire.akamaized.net/v1/master/a0d007312bfd99c47f76b77ae26b1ccdaae76cb1/24_nim_https/110322/channel24/playlist.m3u8",
   },
   {
     id: "sadhna-plus",
@@ -137,12 +167,6 @@ export const channels: Channel[] = [
     name: "Longtail Adaptive",
     group: "HD / Tested",
     url: "http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8",
-  },
-  {
-    id: "skate-phantom-4k",
-    name: "Skate Phantom Flex 4K",
-    group: "4K / Tested",
-    url: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8",
   },
   {
     id: "apple-qthttp",
