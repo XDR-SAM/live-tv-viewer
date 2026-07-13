@@ -21,7 +21,7 @@ export default function ChannelList({ channels, selected, onSelect }: Props) {
             onClick={() => onSelect(ch)}
           >
             <span className="ch-name">{ch.name}</span>
-            <span className="ch-cat muted">{ch.category}</span>
+            <span className="ch-cat muted">{ch.group}</span>
           </button>
         ))}
       </div>

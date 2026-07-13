@@ -98,7 +98,7 @@ export default function App() {
           <div className="now-playing">
             <div>
               <h2>{selected.name}</h2>
-              <p className="muted">{selected.category}</p>
+              <p className="muted">{selected.group}</p>
             </div>
           </div>
           <div className="quality">
