@@ -137,6 +137,12 @@
   cursor: pointer;
   text-align: left;
   transition: background 160ms ease, transform 120ms ease;
+  position: relative;
+  z-index: 0;
+}
+
+.channel-btn + .channel-btn {
+  margin-top: 6px;
 }
 
 .channel-btn:hover {

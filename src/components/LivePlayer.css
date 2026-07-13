@@ -41,7 +41,7 @@
   align-items: center;
   justify-content: center;
   z-index: 4;
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
   border: none;
   cursor: pointer;
   transition: background 180ms ease;
@@ -52,15 +52,15 @@
 }
 
 .playcenter-icon {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   display: block;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(79, 140, 255, 0.35);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(79, 140, 255, 0.6);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  transition: transform 150ms ease;
+  transition: transform 150ms ease, opacity 180ms ease;
 }
 
 .live-player-center:hover .playcenter-icon {
@@ -200,7 +200,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 3;
+  z-index: 5;
   padding: 14px 18px;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
   transition: opacity 180ms ease, transform 180ms ease;

@@ -41,8 +41,6 @@ export default function App() {
         channels={channels}
         selected={selected}
         onSelect={handleSelect}
-        sidebarOpen={sidebarOpen}
-        onCloseSidebar={() => setSidebarOpen(false)}
       />
       <main className="main">
         <div className="player-wrap">
@@ -56,15 +54,11 @@ export default function App() {
             duration={player.duration}
             pip={player.pip}
             fullscreen={player.fullscreen}
-            qualities={[]}
-            currentQuality={-1}
-            bufferedTo={player.currentTime}
             activeChannelName={selected.name}
             onTogglePlay={player.togglePlay}
             onRetry={player.retry}
             onTogglePip={player.togglePip}
             onToggleFullscreen={player.toggleFullscreen}
-            onSetQuality={() => {}}
           />
         </div>
         <div className="controls">
@@ -72,12 +66,6 @@ export default function App() {
             <div>
               <h2>{selected.name}</h2>
               <p className="muted">{selected.group}</p>
-            </div>
-          </div>
-          <div className="quality">
-            <label htmlFor="quality" className="muted">Quality</label>
-            <div className="quality-select">
-              <span className="quality-active" aria-hidden="true">AUTO</span>
             </div>
           </div>
         </div>
