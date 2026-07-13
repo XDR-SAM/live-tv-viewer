@@ -1,105 +1,126 @@
-import { useCallback, useState, type RefObject } from "react";
-import type { ReactNode } from "react";
-import "./LivePlayer.css";
+import { useCallback, type RefObject } from "react";
+
+export interface QualityLevel {
+  level: number;
+  label: string;
+  height?: number;
+}
+
+export type PlayerStatus =
+  | "idle"
+  | "loading"
+  | "manifest"
+  | "ready"
+  | "playing"
+  | "buffering"
+  | "error";
 
 export interface LivePlayerProps {
   videoRef: RefObject<HTMLVideoElement | null>;
-  isPlaying: boolean;
+  status: PlayerStatus;
   error: string | null;
   loading: boolean;
+  isPlaying: boolean;
   currentTime: number;
   duration: number;
   pip?: boolean;
-  onTogglePlay: () => void;
+  fullscreen: boolean;
+  qualities: QualityLevel[];
+  currentQuality: number;
+  bufferedTo: number;
   activeChannelName?: string;
+  onTogglePlay: () => void;
   onRetry?: () => void;
   onTogglePip?: () => void;
+  onToggleFullscreen?: () => void;
+  onSetQuality?: (level: number) => void;
 }
 
 export default function LivePlayer({
   videoRef,
-  isPlaying,
+  status,
   error,
+  loading,
+  isPlaying,
   currentTime,
   duration,
-  onTogglePlay,
+  pip,
+  fullscreen,
+  qualities,
+  currentQuality,
+  bufferedTo,
   activeChannelName,
+  onTogglePlay,
   onRetry,
   onTogglePip,
-  pip,
-}: LivePlayerProps): ReactNode {
-  const [showControls, setShowControls] = useState(true);
-  const [seeking, setSeeking] = useState<number | null>(null);
-
+  onToggleFullscreen,
+  onSetQuality,
+}: LivePlayerProps) {
+  const showBuffering = loading || status === "loading" || status === "buffering" || status === "manifest";
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const bufferProgress = duration > 0 ? (bufferedTo / duration) * 100 : progress;
 
-  const handleDoubleClick = useCallback(async () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (!document.pictureInPictureElement && onTogglePip) {
-      try {
-        await video.requestPictureInPicture();
-        onTogglePip();
-      } catch {
-        // ignore unsupported environments
-      }
-    }
-  }, [videoRef, onTogglePip]);
+  const getStatusLabel = () => {
+    if (error) return "Playback error";
+    if (loading || status === "manifest") return "Loading manifest…";
+    if (loading || status === "loading") return "Loading stream…";
+    if (status === "buffering") return "Buffering…";
+    if (status === "ready" || status === "playing") return isPlaying ? "Live" : "Paused";
+    return "Ready";
+  };
+
+  const formatTime = (seconds: number): string => {
+    if (!Number.isFinite(seconds)) return "0:00";
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = Math.floor(seconds % 60);
+    const pad = (n: number): string => n.toString().padStart(2, "0");
+    if (h > 0) return `${h}:${pad(m)}:${pad(s)}`;
+    return `${m}:${pad(s)}`;
+  };
 
   const handleSeek = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      const video = videoRef.current;
-      if (!video || duration <= 0) return;
       const rect = e.currentTarget.getBoundingClientRect();
       const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      video.currentTime = ratio * duration;
+      if (videoRef.current && duration > 0) {
+        videoRef.current.currentTime = ratio * duration;
+      }
     },
     [videoRef, duration]
   );
 
-  const handleSeekStart = useCallback(() => {
-    if (duration <= 0) return;
-    setSeeking(currentTime);
-  }, [currentTime, duration]);
-
-  const handleSeekMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (seeking === null) return;
-      const video = videoRef.current;
-      if (!video || duration <= 0) return;
-      const rect = e.currentTarget.getBoundingClientRect();
-      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      video.currentTime = ratio * duration;
-    },
-    [seeking, videoRef, duration]
-  );
-
-  const handleSeekEnd = useCallback(() => {
-    setSeeking(null);
-  }, []);
-
   return (
-    <div
-      className="live-player"
-      onMouseMove={() => setShowControls(true)}
-      onMouseLeave={() => setShowControls(false)}
-    >
+    <div className="live-player">
       <div className="live-player-wrap">
-        <video
-          ref={videoRef}
-          playsInline
-          className="live-player-video"
-          onDoubleClick={handleDoubleClick}
-        />
+        <video ref={videoRef} playsInline className="live-player-video" />
         <div className="live-player-scrim" aria-hidden="true" />
-        <button
-          className="live-player-center"
-          onClick={onTogglePlay}
-          aria-label={isPlaying ? "Pause" : "Play"}
-        >
-          <span className="playcenter-icon" data-playing={isPlaying} />
-        </button>
-        <div className={`live-player-controls ${showControls ? "visible" : "faded"}`}>
+
+        {error ? (
+          <div className="error-surface">
+            <div className="error-card">
+              <div className="error-title">Playback error</div>
+              <div className="error-message">{error}</div>
+              {onRetry && <button className="retry-btn" onClick={onRetry}>Retry</button>}
+            </div>
+          </div>
+        ) : showBuffering ? (
+          <div className="buffer-surface">
+            <div className="spinner" />
+            <div className="buffer-label">{getStatusLabel()}</div>
+            {loading && (
+              <div className="buffer-meter">
+                <div className="buffer-meter-fill" />
+              </div>
+            )}
+          </div>
+        ) : (
+          <button className="live-player-center" onClick={onTogglePlay} aria-label={isPlaying ? "Pause" : "Play"}>
+            <span className="playcenter-icon" data-playing={isPlaying} />
+          </button>
+        )}
+
+        <div className="live-player-controls visible">
           <div className="controls-row">
             <button className="icon-btn" onClick={onTogglePlay} aria-label={isPlaying ? "Pause" : "Play"}>
               {isPlaying ? (
@@ -117,8 +138,24 @@ export default function LivePlayer({
               <span className="channel-label">{activeChannelName ?? "No channel selected"}</span>
               <span className="time-badge">{formatTime(currentTime)}{duration > 0 ? ` / ${formatTime(duration)}` : ""}</span>
             </div>
+            {onSetQuality && qualities.length > 0 && (
+              <div className="quality-quick">
+                <select
+                  value={currentQuality}
+                  onChange={(e) => onSetQuality(Number(e.target.value))}
+                  aria-label="Quality"
+                >
+                  <option value="-1">Auto</option>
+                  {qualities.map((q) => (
+                    <option key={q.level} value={q.level}>
+                      {q.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             {onTogglePip && (
-              <button className="icon-btn" onClick={onTogglePip} aria-pressed={pip} aria-label="Picture in Picture">
+              <button className={`icon-btn ${pip ? "active" : ""}`} onClick={onTogglePip} aria-pressed={pip} aria-label="Picture in Picture">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M4 6H20V14C20 16.2091 18.2091 18 16 18H14V20H10V18H8C5.79086 18 4 16.2091 4 14V6Z" stroke="currentColor" />
                   <path d="M7 8V13C7 13.5523 7.44772 14 8 14H16" stroke="currentColor" strokeLinecap="round" />
@@ -126,45 +163,29 @@ export default function LivePlayer({
                 </svg>
               </button>
             )}
+            {onToggleFullscreen && (
+              <button className={`icon-btn ${fullscreen ? "active" : ""}`} onClick={onToggleFullscreen} aria-label="Fullscreen">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 3H21V9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M9 21H3V15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M21 3L14 10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M3 21L10 14" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
             <div className="live-indicator" aria-hidden="true">
               <span className="live-dot" />
-              <span>LIVE</span>
+              <span>{(status === "playing" || status === "buffering" || status === "manifest" || status === "loading") ? "LIVE" : "READY"}</span>
             </div>
           </div>
-          <div
-            className="seek"
-            onMouseDown={handleSeekStart}
-            onMouseMove={handleSeekMove}
-            onMouseUp={handleSeekEnd}
-            onMouseLeave={handleSeekEnd}
-            onClick={handleSeek}
-          >
+          <div className="seek" onClick={handleSeek}>
             <div className="track">
+              <div className="buffer" style={{ width: `${bufferProgress}%` }} />
               <div className="progress" style={{ width: `${progress}%` }} />
             </div>
           </div>
         </div>
       </div>
-      {error && onRetry && (
-        <div className="error-surface">
-          <div className="error-card">
-            <div className="error-title">Playback error</div>
-            <div className="error-message">{error}</div>
-            <button className="retry-btn" onClick={onRetry}>Retry</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
-
-function formatTime(seconds: number): string {
-  if (!Number.isFinite(seconds)) return "0:00";
-  const h = Math.floor(seconds / 3600);
-  const m = Math.floor((seconds % 3600) / 60);
-  const s = Math.floor(seconds % 60);
-  const pad = (n: number): string => n.toString().padStart(2, "0");
-  if (h > 0) return `${h}:${pad(m)}:${pad(s)}`;
-  return `${m}:${pad(s)}`;
-}
-
